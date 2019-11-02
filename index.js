@@ -39,8 +39,25 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
 
+Person.prototype.eat=function(food){
+  if(this.stomach.length < 10){
+    this.stomach.push(food);
+  }else{this.poop();
+  }
+}
+
+Person.prototype.poop=function(){
+  this.stomach.length = 0;
+}
+
+Person.prototype.toString = function(){
+  return this.name+", "+this.age;
 }
 
 /*
@@ -56,10 +73,32 @@ function Person() {
     - A car which runs out of `fuel` while driving can't drive any more distance:
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
-
-function Car() {
-
+function Car(model, milesPerGallon) {
+this.model = model;
+this.milesPerGallon = milesPerGallon;
+this.tank = 0; 
+this.odometer=0;
 }
+
+Car.prototype.fill = function(gallons){
+  this.tank = this.tank+gallons;
+}
+Car.prototype.drive = function(miles){
+    this.miles = miles;
+    this.total_miles = this.tank * this.milesPerGallon;
+    this.fuel_needed = this.miles / this.milesPerGallon;
+    this.fuel_difference = this.tank - this.fuel_needed;
+    this.drivableMiles = this.fuel_needed * this.milesPerGallon;
+    if(miles > this.total_miles){
+        miles = this.total_miles;
+       return this.odometer += miles, this.tank = 0,
+      "I ran out of fuel at "+this.odometer+" miles";
+    }else{
+       this.tank = this.tank - this.fuel_needed,
+        this.odometer = this.odometer + this.miles
+    }
+}
+
 
 /*
   TASK 3
@@ -68,18 +107,28 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+Baby.prototype = Object.create(Person.prototype);
+function Baby(name,age,favoriteToy) {
+  Person.call(this,name,age);
+  this.name=name;
+  this.age=age;
+    this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype.play = function(){
+  return "Playing with "+this.favoriteToy;
+}
+
+
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. "This" is bound to an object
+  2. All functions have access to "this" durring execution, as "this" is bound to current object
+  3. "This" globally is the window object
+  4.  If in strict mode and "this" is referenced globally "this" is undefined
 */
 
 
